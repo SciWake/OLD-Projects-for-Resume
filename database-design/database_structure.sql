@@ -33,13 +33,17 @@ CREATE TABLE `contacts` (
   `user_id` INT UNSIGNED NOT NULL,
   `friend_id` INT UNSIGNED NOT NULL,
   `status_id` INT UNSIGNED NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
   PRIMARY KEY (`user_id`, `friend_id`)
 ) COMMENT 'Контакты';
 
 -- Таблица статусов контактов
 CREATE TABLE `contacts_statuses` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(128) NOT NULL UNIQUE
+  `name` VARCHAR(128) NOT NULL UNIQUE,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Тип статуса';
 
 
@@ -52,19 +56,25 @@ CREATE TABLE `groups` (
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
   `chat_history` BOOLEAN NOT NULL COMMENT 'Видна ли история чата',
-  `user_permissions_id` INT UNSIGNED
+  `user_permissions_id` INT UNSIGNED,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Группа';
 
 -- Таблица устанавливает разрешения пользователей
-CREATE TABLE `user_permissions_id` (
+CREATE TABLE `user_permissions` (
   `group_id` SERIAL PRIMARY KEY,
-  `can_send_massages` BOOLEAN,
-  `can_send_media` BOOLEAN,
-  `can_send_sticers_gif` BOOLEAN,
-  `can_preciew_links` BOOLEAN,
-  `can_creating_posts` BOOLEAN,
-  `can_creating_surveys` BOOLEAN,
-  `can_adding_person` BOOLEAN
+  `can_send_massages` BOOLEAN COMMENT 'Разрешение на отправку сооющений',
+  `can_send_media` BOOLEAN COMMENT 'Разрешение на отправку медиафайлов',
+  `can_send_sticers_gif` BOOLEAN COMMENT 'Разрешение на отправку gif',
+  `can_preciew_links` BOOLEAN COMMENT 'Разрешение на предпросмотор ссылок',
+  `can_creating_surveys` BOOLEAN COMMENT 'Разрешение на создание опросов',
+  `can_adding_person` BOOLEAN COMMENT 'Разрешение на добавление участников',
+  `can_pinning_messages` BOOLEAN COMMENT 'Разрешение на закрепление сообщений',
+  `changing_group_profile` BOOLEAN COMMENT 'Разрешение на изменения профиля группы',
+  `time_limit` SMALLINT UNSIGNED COMMENT 'Ограничение времени отправки сообщений',
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 );
 
 -- Таблица связи пользователей и групп
@@ -72,5 +82,7 @@ CREATE TABLE `groups_membership` (
   `group_id` INT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
   `user_type_id` INT UNSIGNED NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`group_id`, `user_id`)
 );
