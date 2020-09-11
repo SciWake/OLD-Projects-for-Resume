@@ -12,7 +12,6 @@ CREATE TABLE `users` (
   `updated_at` DATETIME DEFAULT NOW() ON UPDATE NOW() COMMENT 'Время обновления строки'
 ) COMMENT 'Пользователи';
 
-
 -- Таблица профилей
 CREATE TABLE `profiles` (
   `user_id` SERIAL PRIMARY KEY,
@@ -26,4 +25,19 @@ CREATE TABLE `profiles` (
   `user_description` VARCHAR(255) COMMENT 'Описание( О себе )',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-);
+) COMMENT 'Профиль пользователя';
+
+
+-- Таблица контактов (Дружбы)
+CREATE TABLE `contacts` (
+  `user_id` INT UNSIGNED NOT NULL,
+  `friend_id` INT UNSIGNED NOT NULL,
+  `status_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`user_id`, `friend_id`)
+) COMMENT 'Контакты';
+
+-- Таблица статусов контактов
+CREATE TABLE `contacts_statuses` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(128) NOT NULL UNIQUE
+) COMMENT 'Тип статуса';
