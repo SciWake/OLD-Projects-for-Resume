@@ -34,7 +34,7 @@ CREATE TABLE `contacts` (
   `friend_id` INT UNSIGNED NOT NULL,
   `status_id` INT UNSIGNED NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`user_id`, `friend_id`)
 ) COMMENT 'Контакты';
 
@@ -56,13 +56,13 @@ CREATE TABLE `groups` (
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
   `chat_history` BOOLEAN NOT NULL COMMENT 'Видна ли история чата',
-  `user_permissions_id` INT UNSIGNED,
+  `user_permission_id` INT UNSIGNED,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Группа';
 
 -- Таблица устанавливает разрешения пользователей
-CREATE TABLE `user_permissions` (
+CREATE TABLE `users_permissions` (
   `group_id` SERIAL PRIMARY KEY,
   `can_send_massages` BOOLEAN COMMENT 'Разрешение на отправку сооющений',
   `can_send_media` BOOLEAN COMMENT 'Разрешение на отправку медиафайлов',
@@ -78,7 +78,7 @@ CREATE TABLE `user_permissions` (
 );
 
 -- Таблица связи пользователей и групп
-CREATE TABLE `groups_membership` (
+CREATE TABLE `groups_users` (
   `group_id` INT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
   `user_type_id` INT UNSIGNED NOT NULL,
@@ -86,3 +86,34 @@ CREATE TABLE `groups_membership` (
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`group_id`, `user_id`)
 );
+
+
+-- Таблица канала
+CREATE TABLE `communities` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(128) NOT NULL,
+  `link` VARCHAR(128) NOT NULL UNIQUE,
+  `photo_id` INT UNSIGNED,
+  `description` VARCHAR(255),
+  `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
+) COMMENT 'Канал';
+
+-- Таблица связи пользователей и каналов
+CREATE TABLE `communities_users` (
+  `community_id` INT UNSIGNED NOT NULL,
+  `user_id` INT UNSIGNED NOT NULL,
+  `user_type_id` INT UNSIGNED NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
+  PRIMARY KEY (`community_id`, `user_id`)
+);
+
+-- Таблица типов пользователей
+CREATE TABLE `users_types` (
+  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(32) NOT NULL UNIQUE,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
+) COMMENT 'Таблица типов пользователей в группах и каналах (Админ, пользователь...)'; 
