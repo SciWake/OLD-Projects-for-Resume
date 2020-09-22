@@ -40,11 +40,11 @@ CREATE TABLE `contacts` (
 
 -- Таблица статусов контактов
 CREATE TABLE `contacts_statuses` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` SERIAL PRIMARY KEY,
   `name` VARCHAR(128) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Тип статуса';
+) COMMENT 'Тип статуса контактов';
 
 
 -- Таблица групп
@@ -55,13 +55,13 @@ CREATE TABLE `groups` (
   `photo_id` INT UNSIGNED,
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
-  `chat_history` BOOLEAN NOT NULL COMMENT 'Видна ли история чата',
-  `user_permission_id` INT UNSIGNED,
+  `chat_history` BOOLEAN NOT NULL COMMENT 'Видна ли история чата другим пользователям',
+  `users_permissions_id` INT UNSIGNED COMMENT 'Разрешения для пользователей в группе',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Группа';
 
--- Таблица устанавливает разрешения пользователей
+-- Таблица устанавливает ограничения для пользователей в группе
 CREATE TABLE `users_permissions` (
   `group_id` SERIAL PRIMARY KEY,
   `can_send_massages` BOOLEAN COMMENT 'Разрешение на отправку сооющений',
@@ -75,7 +75,7 @@ CREATE TABLE `users_permissions` (
   `time_limit` SMALLINT UNSIGNED COMMENT 'Ограничение времени отправки сообщений',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-);
+) COMMENT 'Ограничения для пользователей';
 
 -- Таблица связи пользователей и групп
 CREATE TABLE `groups_users` (
@@ -85,7 +85,7 @@ CREATE TABLE `groups_users` (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`group_id`, `user_id`)
-);
+) COMMENT 'Участники групп, связь между пользователями и группами';
 
 -- Таблица связи сообщений в группе
 CREATE TABLE `group_messages` (
@@ -97,7 +97,7 @@ CREATE TABLE `group_messages` (
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-);
+) COMMENT 'Сооющения в группах';
 
 
 -- Таблица канала
@@ -121,7 +121,7 @@ CREATE TABLE `communities_users` (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`community_id`, `user_id`)
-);
+) COMMENT 'Участники каналов, связь между пользователями и каналами';
 
 -- Таблица постов канала
 CREATE TABLE `posts` (
@@ -133,15 +133,15 @@ CREATE TABLE `posts` (
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус поста',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Для канала';
+) COMMENT 'Посты каналов';
 
--- Таблица типов пользователей
+-- Таблица типов пользователей в группах и каналах (Админ, пользователь...)
 CREATE TABLE `users_types` (
   `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(32) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Таблица типов пользователей в группах и каналах (Админ, пользователь...)'; 
+) COMMENT 'Типы пользователей'; 
 
 
 -- Таблица медиафайлов
@@ -154,7 +154,7 @@ CREATE TABLE `media` (
   `metadata` JSON,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-);
+) COMMENT 'Медиафайлы';
 
 -- Таблица типов медиафайлов
 CREATE TABLE `media_types` (
@@ -175,7 +175,7 @@ CREATE TABLE `user_messages` (
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-);
+) COMMENT 'Связь пользователей и сооющений';
 
 
 -- Таблица просмотров постов
