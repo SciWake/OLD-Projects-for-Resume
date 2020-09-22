@@ -87,6 +87,17 @@ CREATE TABLE `groups_users` (
   PRIMARY KEY (`group_id`, `user_id`)
 );
 
+-- Таблица связи сообщений в группе
+CREATE TABLE `group_messages` (
+  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
+  `from_user_id` INT UNSIGNED NOT NULL,
+  `to_group_id` INT UNSIGNED NOT NULL,
+  `body` TEXT NOT NULL,
+  `media_id` INT UNSIGNED,
+  `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
+  `created_at` DATETIME DEFAULT NOW()
+);
+
 
 -- Таблица канала
 CREATE TABLE `communities` (
