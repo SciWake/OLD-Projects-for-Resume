@@ -95,7 +95,8 @@ CREATE TABLE `group_messages` (
   `body` TEXT NOT NULL,
   `media_id` INT UNSIGNED,
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
-  `created_at` DATETIME DEFAULT NOW()
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 );
 
 
@@ -162,3 +163,24 @@ CREATE TABLE `media_types` (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 );
+
+
+-- Таблица связи сообщений пользователей
+CREATE TABLE `user_messages` (
+  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
+  `from_user_id` INT UNSIGNED NOT NULL,
+  `to_user_id` INT UNSIGNED NOT NULL,
+  `body` TEXT NOT NULL,
+  `media_id` INT UNSIGNED,
+  `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
+);
+
+
+-- Таблица просмотров постов
+CREATE TABLE `views` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL,
+  `post_id` INT UNSIGNED NOT NULL COMMENT 'Какая запись получила просмотр'
+) COMMENT 'Просмотры канала';
