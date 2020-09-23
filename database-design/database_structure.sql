@@ -56,14 +56,6 @@ CREATE TABLE `groups` (
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
   `chat_history` BOOLEAN NOT NULL COMMENT 'Видна ли история чата другим пользователям',
-  `users_permissions_id` INT UNSIGNED COMMENT 'Разрешения для пользователей в группе',
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Группа';
-
--- Таблица устанавливает ограничения для пользователей в группе
-CREATE TABLE `users_permissions` (
-  `group_id` SERIAL PRIMARY KEY,
   `can_send_massages` BOOLEAN COMMENT 'Разрешение на отправку сооющений',
   `can_send_media` BOOLEAN COMMENT 'Разрешение на отправку медиафайлов',
   `can_send_sticers_gif` BOOLEAN COMMENT 'Разрешение на отправку gif',
@@ -75,7 +67,8 @@ CREATE TABLE `users_permissions` (
   `time_limit` SMALLINT UNSIGNED COMMENT 'Ограничение времени отправки сообщений',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Ограничения для пользователей';
+) COMMENT 'Группа';
+
 
 -- Таблица связи пользователей и групп
 CREATE TABLE `groups_users` (
