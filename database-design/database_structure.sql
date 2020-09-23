@@ -8,8 +8,8 @@ CREATE TABLE `users` (
   `id` SERIAL PRIMARY KEY,
   `phone` VARCHAR(128) NOT NULL UNIQUE,
   `pin_code` SMALLINT(4) UNSIGNED NOT NULL,
-  `created_at` DATETIME DEFAULT NOW() COMMENT 'Время создания строки',
-  `updated_at` DATETIME DEFAULT NOW() ON UPDATE NOW() COMMENT 'Время обновления строки'
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Пользователи';
 
 -- Таблица профилей
@@ -183,5 +183,6 @@ CREATE TABLE `messages_users` (
 CREATE TABLE `target_types` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки'
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 );
