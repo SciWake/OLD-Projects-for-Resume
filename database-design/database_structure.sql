@@ -87,18 +87,6 @@ CREATE TABLE `groups_users` (
   PRIMARY KEY (`group_id`, `user_id`)
 ) COMMENT 'Участники групп, связь между пользователями и группами';
 
--- Таблица связи сообщений в группе
-CREATE TABLE `group_messages` (
-  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
-  `from_user_id` INT UNSIGNED NOT NULL,
-  `to_group_id` INT UNSIGNED NOT NULL,
-  `body` TEXT NOT NULL,
-  `media_id` INT UNSIGNED,
-  `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Сооющения в группах';
-
 
 -- Таблица канала
 CREATE TABLE `communities` (
@@ -165,11 +153,18 @@ CREATE TABLE `media_types` (
 );
 
 
+-- Таблица просмотров постов
+CREATE TABLE `views` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL,
+  `post_id` INT UNSIGNED NOT NULL COMMENT 'Какая запись получила просмотр'
+) COMMENT 'Просмотры канала';
+
+
 -- Таблица связи сообщений пользователей
-CREATE TABLE `user_messages` (
+CREATE TABLE `messages` (
   `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
-  `from_user_id` INT UNSIGNED NOT NULL,
-  `to_user_id` INT UNSIGNED NOT NULL,
+  `user_id` INT UNSIGNED NOT NULL,
   `body` TEXT NOT NULL,
   `media_id` INT UNSIGNED,
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
@@ -177,10 +172,16 @@ CREATE TABLE `user_messages` (
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Связь пользователей и сооющений';
 
+-- Таблица связи сообщений пользователей
+CREATE TABLE `messages_users` (
+  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
+  `from_user_id` INT UNSIGNED NOT NULL,
+  `target_id` INT UNSIGNED NOT NULL,
+  `target_type_id` INT UNSIGNED NOT NULL
+) COMMENT 'Связь пользователей и сооющений';
 
--- Таблица просмотров постов
-CREATE TABLE `views` (
+CREATE TABLE `target_types` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT UNSIGNED NOT NULL,
-  `post_id` INT UNSIGNED NOT NULL COMMENT 'Какая запись получила просмотр'
-) COMMENT 'Просмотры канала';
+  `name` VARCHAR(255) NOT NULL UNIQUE,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки'
+);
