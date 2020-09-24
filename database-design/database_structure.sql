@@ -105,8 +105,9 @@ CREATE TABLE `communities_users` (
 -- Таблица постов канала
 CREATE TABLE `posts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-  `user_id` INT UNSIGNED NOT NULL,
-  `community_id` INT UNSIGNED NOT NULL,
+  `user_id` INT UNSIGNED NOT NULL COMMENT 'Создатель поста',
+  `community_id` INT UNSIGNED NOT NULL COMMENT 'Канал, в котором создан пост',
+  `title` VARCHAR(255) NOT NULL,
   `body` TEXT NOT NULL,
   `media_id` INT UNSIGNED,
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус поста',
@@ -149,7 +150,7 @@ CREATE TABLE `views` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT UNSIGNED NOT NULL,
   `post_id` INT UNSIGNED NOT NULL COMMENT 'Какая запись получила просмотр'
-) COMMENT 'Просмотры канала';
+) COMMENT 'Просмотры группы';
 
 
 -- Таблица связи сообщений пользователей
@@ -166,7 +167,7 @@ CREATE TABLE `messages` (
 -- Таблица связи сообщений пользователей
 CREATE TABLE `messages_users` (
   `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
-  `messages_id` INT NOT NULL COMMENT 'Текст сообщения',
+  `messages_id` INT UNSIGNED NOT NULL COMMENT 'Текст сообщения',
   `target_id` INT UNSIGNED NOT NULL COMMENT 'id записи в таблице',
   `target_type_id` INT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу'
 ) COMMENT 'Связь пользователей и сооющений';
