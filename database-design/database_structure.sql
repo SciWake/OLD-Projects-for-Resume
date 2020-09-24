@@ -69,7 +69,6 @@ CREATE TABLE `groups` (
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Группа';
 
-
 -- Таблица связи пользователей и групп
 CREATE TABLE `groups_users` (
   `group_id` INT UNSIGNED NOT NULL,
@@ -87,7 +86,6 @@ CREATE TABLE `communities` (
   `name` VARCHAR(128) NOT NULL,
   `link` VARCHAR(128) NOT NULL UNIQUE,
   `photo_id` INT UNSIGNED,
-  `post_id` INT UNSIGNED,
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
@@ -108,7 +106,7 @@ CREATE TABLE `communities_users` (
 CREATE TABLE `posts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
   `user_id` INT UNSIGNED NOT NULL,
-  `communitie_id` INT UNSIGNED NOT NULL,
+  `community_id` INT UNSIGNED NOT NULL,
   `body` TEXT NOT NULL,
   `media_id` INT UNSIGNED,
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус поста',
@@ -117,7 +115,7 @@ CREATE TABLE `posts` (
 ) COMMENT 'Посты каналов';
 
 -- Таблица типов пользователей в группах и каналах (Админ, пользователь...)
-CREATE TABLE `users_types` (
+CREATE TABLE `user_types` (
   `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(32) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
@@ -143,7 +141,7 @@ CREATE TABLE `media_types` (
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-);
+) COMMENT 'Тип медаифайла';
 
 
 -- Таблица просмотров постов
@@ -167,15 +165,16 @@ CREATE TABLE `messages` (
 
 -- Таблица связи сообщений пользователей
 CREATE TABLE `messages_users` (
-  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
-  `from_user_id` INT UNSIGNED NOT NULL,
-  `target_id` INT UNSIGNED NOT NULL,
-  `target_type_id` INT UNSIGNED NOT NULL
+  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+  `messages_id` INT NOT NULL COMMENT 'Текст сообщения',
+  `target_id` INT UNSIGNED NOT NULL COMMENT 'id записи в таблице',
+  `target_type_id` INT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу'
 ) COMMENT 'Связь пользователей и сооющений';
 
+-- Таблица типа сообщения (Пользователю в личные соообщения либо в группу)
 CREATE TABLE `target_types` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-);
+) COMMENT 'Адресация сообщения';
