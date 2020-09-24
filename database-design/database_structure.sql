@@ -35,7 +35,7 @@ CREATE TABLE `contacts` (
   `status_id` INT UNSIGNED NOT NULL,
   `requested_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время отправки строки',  
   `confirmed_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
-  PRIMARY KEY (`user_id`, `friend_id`, `requested_at`)
+  PRIMARY KEY (`user_id`, `friend_id`)
 ) COMMENT 'Контакты';
 
 -- Таблица статусов контактов
