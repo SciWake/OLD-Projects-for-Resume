@@ -6,8 +6,8 @@ USE telegram;
 -- Таблица пользователей
 CREATE TABLE `users` (
   `id` SERIAL PRIMARY KEY,
-  `phone` VARCHAR(128) NOT NULL UNIQUE,
-  `pin_code` SMALLINT(4) UNSIGNED NOT NULL,
+  `phone` VARCHAR(32) NOT NULL UNIQUE,
+  `pin_code` CHAR(6) NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Пользователи';
