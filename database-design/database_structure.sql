@@ -147,10 +147,10 @@ CREATE TABLE `media_types` (
 
 -- Таблица просмотров постов
 CREATE TABLE `views` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT UNSIGNED NOT NULL,
-  `post_id` INT UNSIGNED NOT NULL COMMENT 'Какая запись получила просмотр'
-) COMMENT 'Просмотры группы';
+  `post_id` INT UNSIGNED NOT NULL COMMENT 'Какая запись получила просмотр',
+  PRIMARY KEY (`user_id`, `post_id`)
+) COMMENT 'Просмотры постов';
 
 
 -- Таблица связи сообщений пользователей
