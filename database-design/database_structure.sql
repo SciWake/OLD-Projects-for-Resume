@@ -18,7 +18,7 @@ CREATE TABLE `profiles` (
   `first_name` VARCHAR(255) NOT NULL,
   `last_name` VARCHAR(255),
   `nick_name` VARCHAR(32) UNIQUE,
-  `gender` BOOLEAN NOT NULL COMMENT '{0 : Мужской, 1 : Женский}',
+  `gender` CHAR(1) NOT NULL COMMENT 'Пол пользователя',
   `birthday` DATE NOT NULL COMMENT 'Дата рождения',
   `country` VARCHAR(255) NOT NULL COMMENT 'Страна проживания',
   `photo_id` INT UNSIGNED,
@@ -33,9 +33,9 @@ CREATE TABLE `contacts` (
   `user_id` INT UNSIGNED NOT NULL,
   `friend_id` INT UNSIGNED NOT NULL,
   `status_id` INT UNSIGNED NOT NULL,
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
-  PRIMARY KEY (`user_id`, `friend_id`)
+  `requested_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время отправки строки',  
+  `confirmed_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
+  PRIMARY KEY (`user_id`, `friend_id`, `requested_at`)
 ) COMMENT 'Контакты';
 
 -- Таблица статусов контактов
@@ -166,10 +166,10 @@ CREATE TABLE `messages` (
 
 -- Таблица связи сообщений пользователей
 CREATE TABLE `messages_users` (
-  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
   `messages_id` INT UNSIGNED NOT NULL COMMENT 'Текст сообщения',
   `target_id` INT UNSIGNED NOT NULL COMMENT 'id записи в таблице',
-  `target_type_id` INT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу'
+  `target_type_id` INT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу',
+  PRIMARY KEY (`messages_id`, `target_id`, `target_type_id`)
 ) COMMENT 'Связь пользователей и сооющений';
 
 -- Таблица типа сообщения (Пользователю в личные соообщения либо в группу)
