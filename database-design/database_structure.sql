@@ -56,10 +56,10 @@ CREATE TABLE `groups` (
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
   `chat_history` BOOLEAN NOT NULL COMMENT 'Видна ли история чата другим пользователям',
-  `can_send_massages` BOOLEAN NOT NULL COMMENT 'Разрешение на отправку сооющений',
+  `can_send_massages` BOOLEAN NOT NULL COMMENT 'Разрешение на отправку сообщений',
   `can_send_media` BOOLEAN NOT NULL COMMENT 'Разрешение на отправку медиафайлов',
-  `can_send_sticers_gif` BOOLEAN NOT NULL COMMENT 'Разрешение на отправку gif',
-  `can_preciew_links` BOOLEAN NOT NULL COMMENT 'Разрешение на предпросмотор ссылок',
+  `can_send_stickers_gif` BOOLEAN NOT NULL COMMENT 'Разрешение на отправку gif',
+  `can_preview_links` BOOLEAN NOT NULL COMMENT 'Разрешение на предпросмотр ссылок',
   `can_creating_surveys` BOOLEAN NOT NULL COMMENT 'Разрешение на создание опросов',
   `can_adding_person` BOOLEAN NOT NULL COMMENT 'Разрешение на добавление участников',
   `can_pinning_messages` BOOLEAN NOT NULL COMMENT 'Разрешение на закрепление сообщений',
@@ -129,7 +129,7 @@ CREATE TABLE `media` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `media_type_id` INT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
-  `filename` VARCHAR(255) NOT NULL UNIQUE,
+  `filename` VARCHAR(255) NOT NULL,
   `size` INT NOT NULL,
   `metadata` JSON,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
@@ -142,7 +142,7 @@ CREATE TABLE `media_types` (
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Тип медаифайла';
+) COMMENT 'Тип медиафайла';
 
 
 -- Таблица просмотров постов
@@ -159,23 +159,31 @@ CREATE TABLE `messages` (
   `user_id` INT UNSIGNED NOT NULL,
   `body` TEXT NOT NULL,
   `media_id` INT UNSIGNED,
-  `delivered` BOOLEAN NOT NULL COMMENT 'Статус сообщения',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Связь пользователей и сооющений';
+) COMMENT 'Связь пользователей и сообщений';
 
 -- Таблица связи сообщений пользователей
 CREATE TABLE `messages_users` (
   `messages_id` INT UNSIGNED NOT NULL COMMENT 'Текст сообщения',
   `target_id` INT UNSIGNED NOT NULL COMMENT 'id записи в таблице',
   `target_type_id` INT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу',
+  `status_id` INT UNSIGNED NOT NULL COMMENT 'Статус сообщения',
   PRIMARY KEY (`messages_id`, `target_id`, `target_type_id`)
-) COMMENT 'Связь пользователей и сооющений';
+) COMMENT 'Связь пользователей и сообщений';
 
--- Таблица типа сообщения (Пользователю в личные соообщения либо в группу)
+-- Таблица типа сообщения (Пользователю в личные сообщения либо в группу)
 CREATE TABLE `target_types` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Адресация сообщения';
+
+-- Таблица статусов сообщений
+CREATE TABLE `messages_statuses` (
+  `id` SERIAL PRIMARY KEY,
+  `name` VARCHAR(128) NOT NULL UNIQUE,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
+) COMMENT 'Тип статуса контактов';
