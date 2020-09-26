@@ -246,3 +246,45 @@ SELECT COUNT(*)
 
 
 -- Для groups запускаем файл procedure_messages_users
+
+
+
+-- ____________________________________________________________________________________
+-- CONTACTS
+
+-- Смотрим структуру таблицы
+DESC contacts;
+
+-- Анализируем данные
+SELECT * FROM contacts LIMIT 10;
+
+-- Поиск необычных друзей, где пользователь сам себе друг
+SELECT COUNT(*) FROM contacts WHERE friend_id = user_id;
+-- 1
+
+-- Исправляем случай когда user_id = friend_id
+UPDATE contacts SET friend_id = friend_id + 1 WHERE user_id = friend_id;
+
+-- Поиск необычных друзей, где пользователь сам себе друг
+SELECT COUNT(*) FROM contacts WHERE friend_id = user_id;
+-- 0
+
+
+-- Анализируем данные
+SELECT * FROM contacts LIMIT 10;
+
+-- Проверка строк даты, где requested_at больше чем confirmed_at
+SELECT COUNT(*) FROM contacts WHERE requested_at > confirmed_at;
+-- 396
+
+-- Заменяем строки местами, где requested_at больше чем confirmed_at
+INSERT INTO `contacts` SELECT * FROM `contacts` `t2` 
+  WHERE `requested_at` > `confirmed_at` 
+    ON DUPLICATE KEY UPDATE `confirmed_at` = `t2`.`requested_at`, `requested_at` = `t2`.`confirmed_at`;
+
+-- Проверка строк даты, где requested_at больше чем confirmed_at
+SELECT COUNT(*) FROM contacts WHERE requested_at > confirmed_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM contacts LIMIT 10;
