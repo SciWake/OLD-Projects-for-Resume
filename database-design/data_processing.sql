@@ -414,3 +414,24 @@ SELECT COUNT(*) FROM communities_users WHERE updated_at < created_at;
 
 -- Анализируем конечные данные
 SELECT * FROM communities_users LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- USER_TYPES
+
+-- Смотрим структуру таблицы
+DESC user_types;
+
+-- Анализируем данные
+SELECT * FROM user_types LIMIT 10;
+
+-- Исправим значения name в таблице
+UPDATE user_types SET name = 'creator' WHERE id = 1;  
+UPDATE user_types SET name = 'administrator' WHERE id = 2; 
+UPDATE user_types SET name = 'moderator' WHERE id = 3; 
+UPDATE user_types SET name = 'user' WHERE id = 4; 
+UPDATE user_types SET name = 'banned' WHERE id = 5; 
+
+-- Анализируем конечные данные
+SELECT * FROM user_types LIMIT 10;
