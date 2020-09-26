@@ -288,3 +288,21 @@ SELECT COUNT(*) FROM contacts WHERE requested_at > confirmed_at;
 
 -- Анализируем конечные данные
 SELECT * FROM contacts LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- CONTACTS_STATUSES
+
+-- Смотрим структуру таблицы
+DESC contacts_statuses;
+
+-- Анализируем данные
+SELECT * FROM contacts_statuses LIMIT 10;
+
+-- Исправим значения name в таблице
+UPDATE contacts_statuses SET name = 'friend' WHERE id = 1;  -- Пользователь находится в контактах
+UPDATE contacts_statuses SET name = 'removed' WHERE id = 2;  -- Пользователь удалён из контактов
+
+-- Анализируем конечные данные
+SELECT * FROM contacts_statuses LIMIT 10;
