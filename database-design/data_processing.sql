@@ -343,7 +343,7 @@ SELECT * FROM `groups` LIMIT 10;
 DESC groups_users;
 
 -- Анализируем данные
-SELECT * FROM groups_users;
+SELECT * FROM groups_users LIMIT 10;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM groups_users WHERE updated_at < created_at;
@@ -360,3 +360,57 @@ SELECT COUNT(*) FROM groups_users WHERE updated_at < created_at;
 
 -- Анализируем конечные данные
 SELECT * FROM groups_users LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- COMMUNITIES
+
+-- Смотрим структуру таблицы
+DESC communities;
+
+-- Анализируем данные
+SELECT * FROM communities LIMIT 10;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM communities WHERE updated_at < created_at;
+-- 13
+
+-- Заменяем строки местами, где updated_at меньше чем created_at
+INSERT INTO `communities` SELECT * FROM `communities` `t2` 
+  WHERE `updated_at` < `created_at` 
+    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM communities WHERE updated_at < created_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM communities LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- COMMUNITIES_USERS
+
+-- Смотрим структуру таблицы
+DESC communities_users;
+
+-- Анализируем данные
+SELECT * FROM communities_users LIMIT 10;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM communities_users WHERE updated_at < created_at;
+-- 2141
+
+-- Заменяем строки местами, где updated_at меньше чем created_at
+INSERT INTO `communities_users` SELECT * FROM `communities_users` `t2` 
+  WHERE `updated_at` < `created_at` 
+    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM communities_users WHERE updated_at < created_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM communities_users LIMIT 10;
