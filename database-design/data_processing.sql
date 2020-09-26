@@ -70,9 +70,8 @@ CREATE TEMPORARY TABLE extensions (name VARCHAR(10));
 -- Заполняем значениями
 INSERT INTO extensions VALUES ('jpeg'), ('mp3'), ('txt'), ('ogg'), ('zip');
 
--- Анализируем данные
-SELECT * FROM media LIMIT 10;
-
+-- Переименуем столбец пути к файлу 
+ALTER TABLE media RENAME COLUMN filename TO filepath;
 
 -- Обновляем ссылку на файл
 UPDATE media SET filepath = CONCAT(
@@ -119,7 +118,7 @@ SELECT * FROM profiles LIMIT 10;
   
 -- Данные, где аккаунт был создан быстрее, чем родился пользователь
 SELECT COUNT(*) FROM profiles WHERE created_at < birthday;
--- 37
+-- 30
 
 -- Заменяем строки местами, де аккаунт был создан быстрее, чем родился пользователь
 INSERT INTO `profiles` SELECT * FROM `profiles` `t2` 
@@ -133,7 +132,7 @@ SELECT COUNT(*) FROM profiles WHERE created_at < birthday;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM profiles WHERE updated_at < created_at;
--- 139
+-- 131
 
 -- Заменяем строки местами, где updated_at меньше чем created_at
 INSERT INTO `profiles` SELECT * FROM `profiles` `t2` 
@@ -194,3 +193,56 @@ UPDATE messages_statuses SET name = 'deleted' WHERE id = 5;  -- Удалено
 
 -- Анализируем конечные данные
 SELECT * FROM messages_statuses LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- TARGET_TYPES
+
+-- Смотрим структуру таблицы
+DESC target_types;
+
+-- Анализируем данные
+SELECT * FROM target_types LIMIT 10;
+
+-- Исправим значения name в таблице
+UPDATE target_types SET name = 'users' WHERE id = 1;  -- Сообщение пользователям
+UPDATE target_types SET name = 'groups' WHERE id = 2;  -- Сообщение в группу
+
+-- Анализируем конечные данные
+SELECT * FROM target_types LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- MESSAGES_USERS
+
+-- Смотрим структуру таблицы
+DESC messages_users;
+
+-- Анализируем данные
+SELECT * FROM messages_users LIMIT 10;
+
+
+-- Для users
+
+-- Выбираем сообщения, которые отправлены пользователям
+SELECT * 
+  FROM messages_users
+    INNER JOIN target_types
+	  ON messages_users.target_type_id = target_types.id AND target_types.name = 'users';
+
+-- Выбираем id пользователей из таблицы users
+SELECT id FROM users;
+
+-- Выбираем сообщения, которые отправлены пользователям, где такого пользователя не существует в таблице users
+SELECT COUNT(*)
+    FROM messages_users
+      INNER JOIN target_types
+        ON messages_users.target_type_id = target_types.id AND target_types.name = 'users'
+	WHERE target_id NOT IN (SELECT id FROM users);
+-- 0
+-- Значит данные с пользователями корректные
+
+
+-- Для groups запускаем файл procedure_messages_users
