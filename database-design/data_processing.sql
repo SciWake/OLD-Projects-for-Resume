@@ -306,3 +306,57 @@ UPDATE contacts_statuses SET name = 'removed' WHERE id = 2;  -- Пользова
 
 -- Анализируем конечные данные
 SELECT * FROM contacts_statuses LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- GROUPS
+
+-- Смотрим структуру таблицы
+DESC `groups`;
+
+-- Анализируем данные
+SELECT * FROM `groups` LIMIT 10;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM `groups` WHERE updated_at < created_at;
+-- 9
+
+-- Заменяем строки местами, где updated_at меньше чем created_at
+INSERT INTO `groups` SELECT * FROM `groups` `t2` 
+  WHERE `updated_at` < `created_at` 
+    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM `groups` WHERE updated_at < created_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM `groups` LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- GROUPS_USERS
+
+-- Смотрим структуру таблицы
+DESC groups_users;
+
+-- Анализируем данные
+SELECT * FROM groups_users;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM groups_users WHERE updated_at < created_at;
+-- 1509
+
+-- Заменяем строки местами, где updated_at меньше чем created_at
+INSERT INTO `groups_users` SELECT * FROM `groups_users` `t2` 
+  WHERE `updated_at` < `created_at` 
+    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM groups_users WHERE updated_at < created_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM groups_users LIMIT 10;
