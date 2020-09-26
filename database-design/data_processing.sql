@@ -146,3 +146,51 @@ SELECT COUNT(*) FROM profiles WHERE updated_at < created_at;
 
 -- Анализируем конечные данные
 SELECT * FROM profiles LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- MESSAGES
+
+-- Смотрим структуру таблицы
+DESC messages;
+
+-- Анализируем данные
+SELECT * FROM messages LIMIT 10;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM messages WHERE updated_at < created_at;
+-- 382
+
+-- Заменяем строки местами, где updated_at меньше чем created_at
+INSERT INTO `messages` SELECT * FROM `messages` `t2` 
+  WHERE `updated_at` < `created_at` 
+    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM messages WHERE updated_at < created_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM messages LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- MESSAGES_STATUSES
+
+-- Смотрим структуру таблицы
+DESC messages_statuses;
+
+-- Анализируем данные
+SELECT * FROM messages_statuses LIMIT 10;
+
+-- Исправим значения name в таблице
+UPDATE messages_statuses SET name = 'shipped' WHERE id = 1;  -- Отправлено
+UPDATE messages_statuses SET name = 'delivered' WHERE id = 2;  -- Доставлено
+UPDATE messages_statuses SET name = 'read' WHERE id = 3;  -- Прочитано
+UPDATE messages_statuses SET name = 'сhanged' WHERE id = 4;  -- Изменено
+UPDATE messages_statuses SET name = 'deleted' WHERE id = 5;  -- Удалено
+
+-- Анализируем конечные данные
+SELECT * FROM messages_statuses LIMIT 10;
