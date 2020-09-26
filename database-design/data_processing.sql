@@ -435,3 +435,30 @@ UPDATE user_types SET name = 'banned' WHERE id = 5;
 
 -- Анализируем конечные данные
 SELECT * FROM user_types LIMIT 10;
+
+
+
+-- ____________________________________________________________________________________
+-- POSTS
+
+-- Смотрим структуру таблицы
+DESC posts;
+
+-- Анализируем данные
+SELECT * FROM posts LIMIT 10;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM posts WHERE updated_at < created_at;
+-- 672
+
+-- Заменяем строки местами, где updated_at меньше чем created_at
+INSERT INTO `posts` SELECT * FROM `posts` `t2` 
+  WHERE `updated_at` < `created_at` 
+    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM posts WHERE updated_at < created_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM posts LIMIT 10;
