@@ -5,7 +5,7 @@ SHOW TABLES;
 
 USE telegram;
 
-
+-- ____________________________________________________________________________________
 -- USERS
 
 -- Смотрим структуру таблицы 
@@ -31,7 +31,7 @@ SELECT COUNT(*) FROM users WHERE updated_at < created_at;
 SELECT * FROM users LIMIT 10;
 
 
-
+-- ____________________________________________________________________________________
 -- MEDIA_TYPES
 
 -- Смотрим структуру таблицы
@@ -51,7 +51,7 @@ UPDATE media_types SET name = 'archive' WHERE id = 5;
 SELECT * FROM media_types LIMIT 10;
 
 
-
+-- ____________________________________________________________________________________
 -- MEDIA
 
 -- Смотрим структуру таблицы
@@ -105,3 +105,44 @@ UPDATE media SET media_type_id = (SELECT id FROM media_types WHERE name = 'archi
 
 -- Анализируем конечные данные
 SELECT * FROM media LIMIT 10;
+
+
+-- ____________________________________________________________________________________
+-- PROFILES
+
+-- Смотрим структуру таблицы
+DESC profiles;
+
+-- Анализируем данные
+SELECT * FROM profiles LIMIT 10;
+
+  
+-- Данные, где аккаунт был создан быстрее, чем родился пользователь
+SELECT COUNT(*) FROM profiles WHERE created_at < birthday;
+-- 37
+
+-- Заменяем строки местами, де аккаунт был создан быстрее, чем родился пользователь
+INSERT INTO `profiles` SELECT * FROM `profiles` `t2` 
+  WHERE `created_at` < `birthday` 
+    ON DUPLICATE KEY UPDATE `birthday` = `t2`.`created_at`, `created_at` = `t2`.`birthday`;
+
+-- Проверка данных, где аккаунт был создан быстрее, чем родился пользователь
+SELECT COUNT(*) FROM profiles WHERE created_at < birthday;
+-- 0
+
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM profiles WHERE updated_at < created_at;
+-- 139
+
+-- Заменяем строки местами, где updated_at меньше чем created_at
+INSERT INTO `profiles` SELECT * FROM `profiles` `t2` 
+  WHERE `updated_at` < `created_at` 
+    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
+
+-- Проверка строк даты, где updated_at меньше чем created_at
+SELECT COUNT(*) FROM profiles WHERE updated_at < created_at;
+-- 0
+
+-- Анализируем конечные данные
+SELECT * FROM profiles LIMIT 10;
