@@ -34,7 +34,7 @@ CREATE TABLE `contacts` (
   `friend_id` INT UNSIGNED NOT NULL,
   `status_id` INT UNSIGNED NOT NULL,
   `requested_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время отправки строки',  
-  `confirmed_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
+  `confirmed_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время принятия запроса',
   PRIMARY KEY (`user_id`, `friend_id`)
 ) COMMENT 'Контакты';
 
@@ -129,7 +129,7 @@ CREATE TABLE `media` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `media_type_id` INT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
-  `filename` VARCHAR(255) NOT NULL,
+  `filepath` VARCHAR(255) NOT NULL,
   `size` INT NOT NULL,
   `metadata` JSON,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
@@ -186,4 +186,4 @@ CREATE TABLE `messages_statuses` (
   `name` VARCHAR(128) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
-) COMMENT 'Тип статуса контактов';
+) COMMENT 'Тип статуса сообщений';
