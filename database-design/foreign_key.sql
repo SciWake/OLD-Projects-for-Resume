@@ -98,3 +98,34 @@ ALTER TABLE contacts
     ADD CONSTRAINT contacts_status_id_fk 
     FOREIGN KEY (status_id) REFERENCES contacts_statuses(id)
       ON UPDATE CASCADE;
+
+
+-- Для таблицы groups
+
+-- Смотрим структуру таблицы
+DESC `groups`;
+
+-- Добавляем внешние ключи
+ALTER TABLE `groups`
+  ADD CONSTRAINT groups_photo_id_fk
+    FOREIGN KEY (photo_id) REFERENCES media(id)
+      ON DELETE SET NULL
+      ON UPDATE CASCADE;
+
+
+-- Для таблицы groups_users
+
+-- Смотрим структуру таблицы
+DESC groups_users;
+
+-- Добавляем внешние ключи
+ALTER TABLE groups_users
+  ADD CONSTRAINT groups_users_user_id_fk 
+    FOREIGN KEY (user_id) REFERENCES users(id)
+	  ON UPDATE CASCADE,
+  ADD CONSTRAINT groups_users_group_id_fk 
+    FOREIGN KEY (group_id) REFERENCES `groups`(id)
+      ON UPDATE CASCADE,
+    ADD CONSTRAINT groups_users_user_type_id_fk 
+    FOREIGN KEY (user_type_id) REFERENCES user_types(id)
+      ON UPDATE CASCADE;
