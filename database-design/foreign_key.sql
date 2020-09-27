@@ -129,3 +129,52 @@ ALTER TABLE groups_users
     ADD CONSTRAINT groups_users_user_type_id_fk 
     FOREIGN KEY (user_type_id) REFERENCES user_types(id)
       ON UPDATE CASCADE;
+
+
+-- Для таблицы communities
+
+-- Смотрим структуру таблицы
+DESC communities;
+
+-- Добавляем внешние ключи
+ALTER TABLE communities
+  ADD CONSTRAINT communities_photo_id_fk
+    FOREIGN KEY (photo_id) REFERENCES media(id)
+      ON DELETE SET NULL
+      ON UPDATE CASCADE;
+
+
+-- Для таблицы communities_users
+
+-- Смотрим структуру таблицы
+DESC communities_users;
+
+-- Добавляем внешние ключи
+ALTER TABLE communities_users
+  ADD CONSTRAINT communities_users_community_id_fk
+    FOREIGN KEY (community_id) REFERENCES communities(id)
+	  ON UPDATE CASCADE,
+  ADD CONSTRAINT communities_users_user_id_fk 
+    FOREIGN KEY (user_id) REFERENCES users(id)
+      ON UPDATE CASCADE,
+    ADD CONSTRAINT communities_users_user_type_id_fk 
+    FOREIGN KEY (user_type_id) REFERENCES user_types(id)
+      ON UPDATE CASCADE;
+
+
+-- Для таблицы messages_users
+
+-- Смотрим структуру таблицы
+DESC messages_users;
+
+-- Добавляем внешние ключи
+ALTER TABLE messages_users
+  ADD CONSTRAINT messages_users_messages_id_fk
+    FOREIGN KEY (messages_id) REFERENCES messages(id)
+	  ON UPDATE CASCADE,
+  ADD CONSTRAINT messages_users_target_type_id_fk 
+    FOREIGN KEY (target_type_id) REFERENCES target_types(id)
+      ON UPDATE CASCADE,
+    ADD CONSTRAINT messages_users_status_id_fk 
+    FOREIGN KEY (status_id) REFERENCES messages_statuses(id)
+      ON UPDATE CASCADE;
