@@ -5,7 +5,6 @@ USE telegram;
 -- Смотрим структуру таблицы
 DESC profiles;
 
-
 -- profiles_user_id_fk - При удалении строки в таблице users, будет ошибка, так как пользователь связан с профилем.
 -- profiles_user_id_fk - При обновлении строки в таблице users, ссылка на пользователя будет обновлена в столбце user_id.
 
@@ -28,7 +27,6 @@ ALTER TABLE profiles
 -- Смотрим структуру таблицы
 DESC messages;
 
-
 -- Добавляем внешние ключи
 ALTER TABLE messages
   ADD CONSTRAINT messages_user_id_fk 
@@ -36,4 +34,34 @@ ALTER TABLE messages
 	  ON UPDATE CASCADE,
   ADD CONSTRAINT messages_media_id_fk 
     FOREIGN KEY (media_id) REFERENCES media(id)
+      ON UPDATE CASCADE;
+
+
+-- Для таблицы POSTS
+
+-- Смотрим структуру таблицы
+DESC posts;
+
+-- Добавляем внешние ключи
+ALTER TABLE posts
+  ADD CONSTRAINT posts_user_id_fk 
+    FOREIGN KEY (user_id) REFERENCES users(id)
+	  ON UPDATE CASCADE,
+  ADD CONSTRAINT posts_media_id_fk 
+    FOREIGN KEY (media_id) REFERENCES media(id)
+      ON UPDATE CASCADE;
+
+
+-- Для таблицы media
+
+-- Смотрим структуру таблицы
+DESC media;
+
+-- Добавляем внешние ключи
+ALTER TABLE media
+  ADD CONSTRAINT media_user_id_fk 
+    FOREIGN KEY (user_id) REFERENCES users(id)
+	  ON UPDATE CASCADE,
+  ADD CONSTRAINT media_media_type_id_fk 
+    FOREIGN KEY (media_type_id) REFERENCES media_types(id)
       ON UPDATE CASCADE;
