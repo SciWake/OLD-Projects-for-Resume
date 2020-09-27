@@ -1,34 +1,10 @@
 -- ОБРАБОТКА ТАБЛИЦ И ДАННЫХ
 
+USE telegram;
+
 -- Смотрим все таблицы
 SHOW TABLES;
 
-USE telegram;
-
--- ____________________________________________________________________________________
--- USERS
-
--- Смотрим структуру таблицы 
-DESCRIBE users;
-
--- Анализируем данные
-SELECT * FROM users LIMIT 10;
-
--- Проверка строк даты, где updated_at меньше чем created_at
-SELECT COUNT(*) FROM users WHERE updated_at < created_at;
--- 152
-
--- Заменяем строки местами, где updated_at меньше чем created_at
-INSERT INTO `users` SELECT * FROM `users` `t2` 
-  WHERE `updated_at` < `created_at` 
-    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
-
--- Проверка строк даты, где updated_at меньше чем created_at
-SELECT COUNT(*) FROM users WHERE updated_at < created_at;
--- 0
-
--- Анализируем конечные данные
-SELECT * FROM users LIMIT 10;
 
 
 -- ____________________________________________________________________________________
@@ -70,9 +46,6 @@ CREATE TEMPORARY TABLE extensions (name VARCHAR(10));
 -- Заполняем значениями
 INSERT INTO extensions VALUES ('jpeg'), ('mp3'), ('txt'), ('ogg'), ('zip');
 
--- Переименуем столбец пути к файлу 
-ALTER TABLE media RENAME COLUMN filename TO filepath;
-
 -- Обновляем ссылку на файл
 UPDATE media SET filepath = CONCAT(
   'https://',
@@ -106,47 +79,6 @@ UPDATE media SET media_type_id = (SELECT id FROM media_types WHERE name = 'archi
 SELECT * FROM media LIMIT 10;
 
 
--- ____________________________________________________________________________________
--- PROFILES
-
--- Смотрим структуру таблицы
-DESC profiles;
-
--- Анализируем данные
-SELECT * FROM profiles LIMIT 10;
-
-  
--- Данные, где аккаунт был создан быстрее, чем родился пользователь
-SELECT COUNT(*) FROM profiles WHERE created_at < birthday;
--- 30
-
--- Заменяем строки местами, де аккаунт был создан быстрее, чем родился пользователь
-INSERT INTO `profiles` SELECT * FROM `profiles` `t2` 
-  WHERE `created_at` < `birthday` 
-    ON DUPLICATE KEY UPDATE `birthday` = `t2`.`created_at`, `created_at` = `t2`.`birthday`;
-
--- Проверка данных, где аккаунт был создан быстрее, чем родился пользователь
-SELECT COUNT(*) FROM profiles WHERE created_at < birthday;
--- 0
-
-
--- Проверка строк даты, где updated_at меньше чем created_at
-SELECT COUNT(*) FROM profiles WHERE updated_at < created_at;
--- 131
-
--- Заменяем строки местами, где updated_at меньше чем created_at
-INSERT INTO `profiles` SELECT * FROM `profiles` `t2` 
-  WHERE `updated_at` < `created_at` 
-    ON DUPLICATE KEY UPDATE `created_at` = `t2`.`updated_at`, `updated_at` = `t2`.`created_at`;
-
--- Проверка строк даты, где updated_at меньше чем created_at
-SELECT COUNT(*) FROM profiles WHERE updated_at < created_at;
--- 0
-
--- Анализируем конечные данные
-SELECT * FROM profiles LIMIT 10;
-
-
 
 -- ____________________________________________________________________________________
 -- MESSAGES
@@ -159,7 +91,7 @@ SELECT * FROM messages LIMIT 10;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM messages WHERE updated_at < created_at;
--- 382
+-- 153
 
 -- Заменяем строки местами, где updated_at меньше чем created_at
 INSERT INTO `messages` SELECT * FROM `messages` `t2` 
@@ -275,7 +207,7 @@ SELECT * FROM contacts LIMIT 10;
 
 -- Проверка строк даты, где requested_at больше чем confirmed_at
 SELECT COUNT(*) FROM contacts WHERE requested_at > confirmed_at;
--- 396
+-- 184
 
 -- Заменяем строки местами, где requested_at больше чем confirmed_at
 INSERT INTO `contacts` SELECT * FROM `contacts` `t2` 
@@ -320,7 +252,7 @@ SELECT * FROM `groups` LIMIT 10;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM `groups` WHERE updated_at < created_at;
--- 9
+-- 11
 
 -- Заменяем строки местами, где updated_at меньше чем created_at
 INSERT INTO `groups` SELECT * FROM `groups` `t2` 
@@ -347,7 +279,7 @@ SELECT * FROM groups_users LIMIT 10;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM groups_users WHERE updated_at < created_at;
--- 1509
+-- 156
 
 -- Заменяем строки местами, где updated_at меньше чем created_at
 INSERT INTO `groups_users` SELECT * FROM `groups_users` `t2` 
@@ -374,7 +306,7 @@ SELECT * FROM communities LIMIT 10;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM communities WHERE updated_at < created_at;
--- 13
+-- 14
 
 -- Заменяем строки местами, где updated_at меньше чем created_at
 INSERT INTO `communities` SELECT * FROM `communities` `t2` 
@@ -401,7 +333,7 @@ SELECT * FROM communities_users LIMIT 10;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM communities_users WHERE updated_at < created_at;
--- 2141
+-- 151
 
 -- Заменяем строки местами, где updated_at меньше чем created_at
 INSERT INTO `communities_users` SELECT * FROM `communities_users` `t2` 
@@ -449,7 +381,7 @@ SELECT * FROM posts LIMIT 10;
 
 -- Проверка строк даты, где updated_at меньше чем created_at
 SELECT COUNT(*) FROM posts WHERE updated_at < created_at;
--- 672
+-- 361
 
 -- Заменяем строки местами, где updated_at меньше чем created_at
 INSERT INTO `posts` SELECT * FROM `posts` `t2` 
