@@ -22,8 +22,7 @@ CREATE TABLE `profiles` (
   `birthday` DATE NOT NULL COMMENT 'Дата рождения',
   `country` VARCHAR(255) NOT NULL COMMENT 'Страна проживания',
   `photo_id` BIGINT UNSIGNED,
-  `user_description` VARCHAR(255) COMMENT 'Описание пользователя',
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `user_description` VARCHAR(255) COMMENT 'Описание пользователя',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Профиль пользователя';
 
@@ -169,6 +168,8 @@ CREATE TABLE `messages_users` (
   `target_id` INT UNSIGNED NOT NULL COMMENT 'id записи в таблице',
   `target_type_id` TINYINT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу',
   `status_id` TINYINT UNSIGNED NOT NULL COMMENT 'Статус сообщения',
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`messages_id`, `target_id`, `target_type_id`)
 ) COMMENT 'Связь пользователей и сообщений';
 
