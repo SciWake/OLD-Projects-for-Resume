@@ -65,3 +65,36 @@ ALTER TABLE media
   ADD CONSTRAINT media_media_type_id_fk 
     FOREIGN KEY (media_type_id) REFERENCES media_types(id)
       ON UPDATE CASCADE;
+
+
+-- Для таблицы views
+
+-- Смотрим структуру таблицы
+DESC views;
+
+-- Добавляем внешние ключи
+ALTER TABLE views
+  ADD CONSTRAINT views_user_id_fk 
+    FOREIGN KEY (user_id) REFERENCES users(id)
+	  ON UPDATE CASCADE,
+  ADD CONSTRAINT views_post_id_fk 
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+      ON UPDATE CASCADE;
+
+
+-- Для таблицы contacts
+
+-- Смотрим структуру таблицы
+DESC contacts;
+
+-- Добавляем внешние ключи
+ALTER TABLE contacts
+  ADD CONSTRAINT contacts_user_id_fk 
+    FOREIGN KEY (user_id) REFERENCES users(id)
+	  ON UPDATE CASCADE,
+  ADD CONSTRAINT contacts_friend_id_fk 
+    FOREIGN KEY (friend_id) REFERENCES users(id)
+      ON UPDATE CASCADE,
+    ADD CONSTRAINT contacts_status_id_fk 
+    FOREIGN KEY (status_id) REFERENCES contacts_statuses(id)
+      ON UPDATE CASCADE;
