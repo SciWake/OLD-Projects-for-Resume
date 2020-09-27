@@ -1,6 +1,6 @@
 USE telegram;
 
--- Для таблицы PROFILES
+-- Для таблицы profiles
 
 -- Смотрим структуру таблицы
 DESC profiles;
@@ -22,7 +22,7 @@ ALTER TABLE profiles
       ON UPDATE CASCADE;
 
 
--- Для таблицы MESSAGES
+-- Для таблицы messages
 
 -- Смотрим структуру таблицы
 DESC messages;
@@ -37,7 +37,7 @@ ALTER TABLE messages
       ON UPDATE CASCADE;
 
 
--- Для таблицы POSTS
+-- Для таблицы posts
 
 -- Смотрим структуру таблицы
 DESC posts;
