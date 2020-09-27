@@ -5,7 +5,7 @@ USE telegram;
 
 -- Таблица пользователей
 CREATE TABLE `users` (
-  `id` SERIAL PRIMARY KEY,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `phone` VARCHAR(32) NOT NULL UNIQUE,
   `pin_code` CHAR(6) NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
@@ -14,14 +14,14 @@ CREATE TABLE `users` (
 
 -- Таблица профилей
 CREATE TABLE `profiles` (
-  `user_id` SERIAL PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `first_name` VARCHAR(255) NOT NULL,
   `last_name` VARCHAR(255),
   `nick_name` VARCHAR(32) UNIQUE,
   `gender` CHAR(1) NOT NULL COMMENT 'Пол пользователя',
   `birthday` DATE NOT NULL COMMENT 'Дата рождения',
   `country` VARCHAR(255) NOT NULL COMMENT 'Страна проживания',
-  `photo_id` INT UNSIGNED,
+  `photo_id` BIGINT UNSIGNED,
   `user_description` VARCHAR(255) COMMENT 'Описание пользователя',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
@@ -32,7 +32,7 @@ CREATE TABLE `profiles` (
 CREATE TABLE `contacts` (
   `user_id` INT UNSIGNED NOT NULL,
   `friend_id` INT UNSIGNED NOT NULL,
-  `status_id` INT UNSIGNED NOT NULL,
+  `status_id` TINYINT UNSIGNED NOT NULL,
   `requested_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время отправки строки',  
   `confirmed_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время принятия запроса',
   PRIMARY KEY (`user_id`, `friend_id`)
@@ -40,7 +40,7 @@ CREATE TABLE `contacts` (
 
 -- Таблица статусов контактов
 CREATE TABLE `contacts_statuses` (
-  `id` SERIAL PRIMARY KEY,
+  `id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(128) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
@@ -49,10 +49,10 @@ CREATE TABLE `contacts_statuses` (
 
 -- Таблица групп
 CREATE TABLE `groups` (
-  `id` SERIAL PRIMARY KEY,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(128) NOT NULL,
   `link` VARCHAR(128) NOT NULL UNIQUE,
-  `photo_id` INT UNSIGNED,
+  `photo_id` BIGINT UNSIGNED,
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
   `chat_history` BOOLEAN NOT NULL COMMENT 'Видна ли история чата другим пользователям',
@@ -73,7 +73,7 @@ CREATE TABLE `groups` (
 CREATE TABLE `groups_users` (
   `group_id` INT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
-  `user_type_id` INT UNSIGNED NOT NULL,
+  `user_type_id` TINYINT UNSIGNED NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`group_id`, `user_id`)
@@ -85,7 +85,7 @@ CREATE TABLE `communities` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(128) NOT NULL,
   `link` VARCHAR(128) NOT NULL UNIQUE,
-  `photo_id` INT UNSIGNED,
+  `photo_id` BIGINT UNSIGNED,
   `description` VARCHAR(255),
   `is_open` BOOLEAN NOT NULL COMMENT 'Тип канала {0 : Закрытый, 1 : Открытый}',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
@@ -96,7 +96,7 @@ CREATE TABLE `communities` (
 CREATE TABLE `communities_users` (
   `community_id` INT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
-  `user_type_id` INT UNSIGNED NOT NULL,
+  `user_type_id` TINYINT UNSIGNED NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
   PRIMARY KEY (`community_id`, `user_id`)
@@ -109,7 +109,7 @@ CREATE TABLE `posts` (
   `community_id` INT UNSIGNED NOT NULL COMMENT 'Канал, в котором создан пост',
   `title` VARCHAR(255) NOT NULL,
   `body` TEXT NOT NULL,
-  `media_id` INT UNSIGNED,
+  `media_id` BIGINT UNSIGNED,
   `delivered` BOOLEAN NOT NULL COMMENT 'Статус поста',
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
@@ -117,7 +117,7 @@ CREATE TABLE `posts` (
 
 -- Таблица типов пользователей в группах и каналах (Админ, пользователь...)
 CREATE TABLE `user_types` (
-  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+  `id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(32) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
@@ -126,8 +126,8 @@ CREATE TABLE `user_types` (
 
 -- Таблица медиафайлов
 CREATE TABLE `media` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `media_type_id` INT UNSIGNED NOT NULL,
+  `id` SERIAL PRIMARY KEY,
+  `media_type_id` TINYINT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
   `filepath` VARCHAR(255) NOT NULL,
   `size` INT NOT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE `media` (
 
 -- Таблица типов медиафайлов
 CREATE TABLE `media_types` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
@@ -155,26 +155,26 @@ CREATE TABLE `views` (
 
 -- Таблица связи сообщений пользователей
 CREATE TABLE `messages` (
-  `id` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
+  `id` SERIAL PRIMARY KEY,  
   `user_id` INT UNSIGNED NOT NULL,
   `body` TEXT NOT NULL,
-  `media_id` INT UNSIGNED,
+  `media_id` BIGINT UNSIGNED,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
 ) COMMENT 'Связь пользователей и сообщений';
 
 -- Таблица связи сообщений пользователей
 CREATE TABLE `messages_users` (
-  `messages_id` INT UNSIGNED NOT NULL COMMENT 'Текст сообщения',
+  `messages_id` BIGINT UNSIGNED NOT NULL COMMENT 'Текст сообщения',
   `target_id` INT UNSIGNED NOT NULL COMMENT 'id записи в таблице',
-  `target_type_id` INT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу',
-  `status_id` INT UNSIGNED NOT NULL COMMENT 'Статус сообщения',
+  `target_type_id` TINYINT UNSIGNED NOT NULL COMMENT 'Сообщение пользователю или в группу',
+  `status_id` TINYINT UNSIGNED NOT NULL COMMENT 'Статус сообщения',
   PRIMARY KEY (`messages_id`, `target_id`, `target_type_id`)
 ) COMMENT 'Связь пользователей и сообщений';
 
 -- Таблица типа сообщения (Пользователю в личные сообщения либо в группу)
 CREATE TABLE `target_types` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
@@ -182,7 +182,7 @@ CREATE TABLE `target_types` (
 
 -- Таблица статусов сообщений
 CREATE TABLE `messages_statuses` (
-  `id` SERIAL PRIMARY KEY,
+  `id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(128) NOT NULL UNIQUE,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания строки',  
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки'
