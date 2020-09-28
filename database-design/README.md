@@ -1,6 +1,6 @@
 <h1 align="center">Проектирование базы данных telegram</h1>
 
-## Описание проекта:
+## :milky_way: Описание проекта:
 
 В качестве проекта, выбран мессенджер telegram. Главная задача проекта - это спроектировать 
 базу данных мессенджера. Создание структуры базы данных оценивается возможностями мессенджера, 
@@ -14,9 +14,9 @@
 4. Создание связей между таблицами;
 5. Написание запросов на извлечение данных.
 
-## Файлы проекта:
+## :file_folder: Файлы проекта:
 
-### [`database_structure.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/database_structure.sql)
+### [`database_structure.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/database_structure.sql) 
 
 Файл содержит структур базы данных в виде SQL-кода. Разработано 17 таблиц, которые реализуют основные возможности
 мессенджера. Количество таблиц можно увеличить, если потребются дополнительные возможности.
