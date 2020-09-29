@@ -76,3 +76,10 @@
 пока функция возвращает TRUE, если функция вернула FALSE, тогда все записи считаются обновленными.
 
 Данная проблема стала причиной, по которой, набор этих команд был вынесен в отдельный файл.
+
+### :package: [`Сommunication`](https://github.com/finloukuritsun2090/Projects-for-Resume/tree/master/database-design/Сommunication)
+
+Внутри данной директории находится логка связей между таблицами.
+ * :page_facing_up: **[`foreign_key.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/foreign_key.sql)** Внутри файла SQL-код, который реализет связи между таблицами.
+* :page_facing_up: **[`EER_Diagram.svg`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.svg)** ER диаграмма, которая отображает отношения набора сущностей, хранящиеся в базе данных. Сохранена в виде SVG файла, который позволяет визуально оценить структуру БД.
+* :page_facing_up: **[`EER_Diagram.mwb`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.mwb)** Аналогично описанному выше, только данный файл имеет формат, который позволяет загрузить диаграмму в графический интерфейс (MySQL).
