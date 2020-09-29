@@ -42,6 +42,21 @@ SELECT messages.user_id, messages.body, messages_users.target_id
 	WHERE messages_users.target_id = 65 OR messages.user_id = 65;
 
 
+-- Выборка самый большой файл пользоватлея и файл, добавленый последним.
+SELECT profiles.user_id, 
+  CONCAT(profiles.first_name, ' ', profiles.last_name) AS "user name",
+  media_big_file.id AS "The heaviest user file",
+  media_top_date.id AS "Last user file"
+    FROM profiles
+	  LEFT JOIN media AS media_big_file
+        ON media_big_file.user_id = profiles.user_id
+	  LEFT JOIN media AS media_top_date
+        ON media_top_date.user_id = profiles.user_id
+WHERE profiles.user_id = 90
+ORDER BY media_big_file.size DESC, media_top_date.created_at DESC
+LIMIT 1;
+
+
 -- Построить запрос, который будет выводить следующие столбцы:
 -- имя группы
 -- среднее количество пользователей в группах
