@@ -83,3 +83,17 @@
  * :page_facing_up: **[`foreign_key.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/foreign_key.sql)** Внутри файла SQL-код, который реализет связи между таблицами.
 * :page_facing_up: **[`EER_Diagram.svg`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.svg)** ER диаграмма, которая отображает отношения набора сущностей, хранящиеся в базе данных. Сохранена в виде SVG файла, который позволяет визуально оценить структуру БД.
 * :page_facing_up: **[`EER_Diagram.mwb`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.mwb)** Аналогично описанному выше, только данный файл имеет формат, который позволяет загрузить диаграмму в графический интерфейс (MySQL).
+
+### :page_facing_up: [`requests.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/requests.sql)
+
+Внутри файла находятся основные запросы, среди которых, JOIN запросы на выборку медиафайлов, сообщений, запросы с использованием оконных функций.
+
+### :page_facing_up: [`trigger_update_and_insert_messages.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/trigger_update_and_insert_messages.sql)
+
+В файле реализовано два триггера, первый контроллирует вставку, воторой обновление данных в таблице сообщений между пользователями и группами. Так как связь задаётся неявно (target_id ссылается на идентификатор записи, а target_type_id указывает таблицу или другими словами, указывает кому было отправлено сообщение, пользователю или в группу), обработать такой случай стандартными возможностями MySQL не получится.
+
+Тригер рабаботает аналогично тому, как СУБД проверяет допустимость значений внешнего ключа, 
+например для столбца user_id и ссылку на id из таблицы users.
+Триггер работает на вставку/обновление строки в таблице messages_users, который проверяет по введённым значениям target_id и target_type_id, существует ли
+в соответствующей таблице запись с представленным id. Если в соответствующей таблице, которая задана ссылкой в target_type_id нет идентификатора установленного в столбце target_id, то будет генерироваться ошибка. Ошибка сообщает о том, что не ссылочной целостности (Попытка вставки данных, которых 
+нет в связанных на ЛОГИЧЕСКОМ уровне таблицах).
