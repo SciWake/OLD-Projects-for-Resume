@@ -51,7 +51,7 @@
    * messages_statuses - Статус сообщения (отправлено, доставлено, прочитано...);
    * messages_users - Устанавливает связь между отправителем и получаетелем.
  
-### :page_facing_up: `telegram_data.sql`
+### :page_facing_up: [`telegram_data.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/telegram_data.sql)
 
 Файл содержит тестовые данные, которые испольлзуются для проверки работоспособности базы данных.
 Генерация данных произовдилась сервисом "http://filldb.info/". 
