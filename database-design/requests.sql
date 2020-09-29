@@ -86,3 +86,26 @@ SELECT DISTINCT
       WINDOW w_community AS (PARTITION BY communities.id),
              w_community_birthday_desc AS (PARTITION BY communities.id ORDER BY profiles.birthday DESC),
              w_community_birthday_asc AS (PARTITION BY communities.id ORDER BY profiles.birthday);
+
+
+-- Создадим представление
+-- Количество медиафайлов пользователей
+DROP VIEW IF EXISTS mediafile_users;
+CREATE VIEW mediafile_users AS
+	SELECT profiles.user_id, COUNT(media.id) AS count_media
+	  FROM profiles 
+		LEFT JOIN media
+		  ON profiles.user_id = media.user_id
+	  GROUP BY profiles.user_id
+	  ORDER BY count_media DESC;
+
+-- Обращаемся к представлению
+SELECT * FROM mediafile_users;
+
+
+-- Воспользуемся данным представлением и напишем на его основе запрос
+-- Для пользователя с наибольшим количеством медиафайлов, выведем общий размер файлов в МБ
+SELECT user_id,
+  SUM(size) / 1048576 AS "media file size MB"
+	FROM media
+      WHERE media.user_id = (SELECT user_id FROM mediafile_users LIMIT 1);
