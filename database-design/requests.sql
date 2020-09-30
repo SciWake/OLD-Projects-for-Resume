@@ -4,7 +4,7 @@ USE telegram;
 -- Выборка трёх групп, которые по всем постам набрали наибольше количество просмотров
 SELECT posts.community_id, COUNT(views.user_id) AS count_views_groups
   FROM views
-    LEFT JOIN posts
+    INNER JOIN posts
       ON views.post_id = posts.id
 GROUP BY posts.community_id
 ORDER BY count_views_groups DESC
@@ -43,6 +43,7 @@ SELECT messages.user_id, messages.body, messages_users.target_id
 
 
 -- Выборка самый большой файл пользоватлея и файл, добавленый последним.
+-- Данный вариант работает только для одно пользователя и имеет сложную логику работы
 SELECT profiles.user_id, 
   CONCAT(profiles.first_name, ' ', profiles.last_name) AS "user name",
   media_big_file.id AS "The heaviest user file",
@@ -55,6 +56,18 @@ SELECT profiles.user_id,
 WHERE profiles.user_id = 90
 ORDER BY media_big_file.size DESC, media_top_date.created_at DESC
 LIMIT 1;
+
+-- Вариант с оконными функциями
+SELECT DISTINCT users.id,
+  FIRST_VALUE(media.id) OVER w_media_size_desc AS "The largest user file",
+  FIRST_VALUE(media.id) OVER w_media_created_at_desc AS "Last user file"
+    FROM profiles
+      INNER JOIN users
+        ON profiles.user_id = users.id
+	  LEFT JOIN media
+        ON media.user_id = users.id
+	  WINDOW w_media_size_desc AS (PARTITION BY users.id ORDER BY media.size DESC),
+      w_media_created_at_desc AS (PARTITION BY users.id ORDER BY media.created_at DESC);
 
 
 -- Построить запрос, который будет выводить следующие столбцы:
