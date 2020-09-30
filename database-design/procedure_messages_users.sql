@@ -45,12 +45,15 @@ UPDATE messages_users
 процедуры, которая при запуске выполнить обновление данных.*/
 
 
+-- ___________________________________________________________
+-- РЕАЛИЗАЦИЯ ПРОЦЕДУРЫ
+
 DELIMITER //
 
 -- Функция возвращает TRUE, если есть данные для обновления, иначе FALSE
 DROP FUNCTION IF EXISTS update_groups//
 CREATE FUNCTION update_groups()
-RETURNS INT DETERMINISTIC
+RETURNS BOOL READS SQL DATA
 BEGIN
 
   DECLARE count_update INT;
@@ -99,8 +102,8 @@ BEGIN
   
 END//
 
-
 DELIMITER ;
+
 
 -- Запускаем процедуру
 CALL update_messages_users_in_group;
