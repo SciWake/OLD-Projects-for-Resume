@@ -17,7 +17,7 @@
 
 ## :file_folder: Файлы проекта:
 
-### :page_facing_up: [`database_structure.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/database_structure.sql)
+### :page_facing_up: [`database_structure.sql`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/database_structure.sql)
 
 Файл содержит структур базы данных в виде SQL-кода. Разработано 17 таблиц, которые реализуют основные возможности
 мессенджера. В случае реализации дополнительного функцианал, потребуется увеличить структуру БД.
@@ -51,21 +51,21 @@
    * messages_statuses - Статус сообщения (отправлено, доставлено, прочитано...);
    * messages_users - Устанавливает связь между отправителем и получаетелем.
  
-### :page_facing_up: [`telegram_data.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/telegram_data.sql)
+### :page_facing_up: [`telegram_data.sql`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/telegram_data.sql)
 
 Файл содержит тестовые данные, которые испольлзуются для проверки работоспособности базы данных.
 Генерация данных произовдилась сервисом "http://filldb.info/". 
 
-### :page_facing_up: [`data_processing.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/data_processing.sql)
+### :page_facing_up: [`data_processing.sql`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/data_processing.sql)
 Сервис не может предоставить данные под каждую структуру, именно поэтому, некоторые данные пришлось доработать в 
 ручном режиме. Данные без обработки нарущают целостность данных в системе, что не позволять установить некоторые связи
 между таблицами, также, это усложняет работу с запросами.
 
 Файл представляет собой набор SQL-команды, которые используются для обработки данных. При обработке используются  CRUD-операции.
 
-### :page_facing_up: [`procedure_messages_users.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/procedure_messages_users.sql)
+### :page_facing_up: [`procedure_messages_users.sql`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/procedure_messages_users.sql)
 
-Данный файл является продолжение файла [data_processing.sql](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/data_processing.sql)
+Данный файл является продолжение файла [data_processing.sql](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/data_processing.sql)
 
 В процессе обработки данных таблицы messages_users, была задача восстановить целостность значений, которые 
 ссылаются на несуществующие идентификаторы таблицы. Для решение проблемы, был написан запрос генерации новых идентификаторов, которые удовлетворяют всем требованиям. Так как данный запрос потребовалось бы запустить огромное количество раз, была написана процедура обновления множество строк, одним запуском.
@@ -77,18 +77,18 @@
 
 Данная проблема стала причиной, по которой, набор этих команд был вынесен в отдельный файл.
 
-### :package: [`Сommunication`](https://github.com/finloukuritsun2090/Projects-for-Resume/tree/master/database-design/Сommunication)
+### :package: [`Сommunication`](https://github.com/bimastics/Projects-for-Resume/tree/master/database-design/Сommunication)
 
 Внутри данной директории находится логка связей между таблицами.
- * :page_facing_up: **[`foreign_key.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/foreign_key.sql)** Внутри файла SQL-код, который реализет связи между таблицами.
-* :page_facing_up: **[`EER_Diagram.svg`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.svg)** ER диаграмма, которая отображает отношения набора сущностей, хранящиеся в базе данных. Сохранена в виде SVG файла, который позволяет визуально оценить структуру БД.
-* :page_facing_up: **[`EER_Diagram.mwb`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.mwb)** Аналогично описанному выше, только данный файл имеет формат, который позволяет загрузить диаграмму в графический интерфейс (MySQL).
+ * :page_facing_up: **[`foreign_key.sql`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/Сommunication/foreign_key.sql)** Внутри файла SQL-код, который реализет связи между таблицами.
+* :page_facing_up: **[`EER_Diagram.svg`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.svg)** ER диаграмма, которая отображает отношения набора сущностей, хранящиеся в базе данных. Сохранена в виде SVG файла, который позволяет визуально оценить структуру БД.
+* :page_facing_up: **[`EER_Diagram.mwb`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/Сommunication/EER_Diagram.mwb)** Аналогично описанному выше, только данный файл имеет формат, который позволяет загрузить диаграмму в графический интерфейс (MySQL).
 
-### :page_facing_up: [`requests.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/requests.sql)
+### :page_facing_up: [`requests.sql`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/requests.sql)
 
 Внутри файла находятся основные запросы, среди которых, JOIN запросы на выборку медиафайлов, сообщений, запросы с использованием оконных функций.
 
-### :page_facing_up: [`trigger_update_and_insert_messages.sql`](https://github.com/finloukuritsun2090/Projects-for-Resume/blob/master/database-design/trigger_update_and_insert_messages.sql)
+### :page_facing_up: [`trigger_update_and_insert_messages.sql`](https://github.com/bimastics/Projects-for-Resume/blob/master/database-design/trigger_update_and_insert_messages.sql)
 
 В файле реализовано два триггера, первый контроллирует вставку, воторой обновление данных в таблице сообщений между пользователями и группами. Так как связь задаётся неявно (target_id ссылается на идентификатор записи, а target_type_id указывает таблицу или другими словами, указывает кому было отправлено сообщение, пользователю или в группу), обработать такой случай стандартными возможностями MySQL не получится.
 
