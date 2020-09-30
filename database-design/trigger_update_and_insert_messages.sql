@@ -84,32 +84,6 @@ INSERT INTO messages_users(messages_id, target_id, target_type_id, status_id) VA
 -- Такого id в таблице target_types нет, поэтому триггер сообщает нам об ошибке
 
 
-
--- Создадим триггер для проверки валидности target_id и target_type_id для обновления
-DROP TRIGGER IF EXISTS messages_users_insert;
-DELIMITER //
-
-CREATE TRIGGER messages_users_insert BEFORE UPDATE ON messages_users
-
-FOR EACH ROW BEGIN
-  IF NOT is_row_exists(NEW.target_id, NEW.target_type_id) THEN
-    SIGNAL SQLSTATE "45000"
-    SET MESSAGE_TEXT = "Error adding like! Target table doesn't contain row id provided!";
-  END IF;
-  
-END//
-
-DELIMITER ;
-
--- Проверка работы триггера на обновление
-UPDATE messages_users SET target_id = (10) WHERE messages_id = 1 AND status_id = 3;
--- Обновление прошло успешно
-
--- Проверка работы триггера на обновление
-UPDATE messages_users SET target_id = (1000) WHERE messages_id = 1 AND status_id = 3;
--- Error Code: 1644. Error adding like! Target table doesn't contain row id provided!
--- Обновление не получилось, так как пользователя с идентификатором 1000 нет
-
 -- Просмотр функций и процедур
 SHOW FUNCTION STATUS LIKE 'is_row_exists';
 SHOW CREATE FUNCTION is_row_exists;
