@@ -1,5 +1,6 @@
 import scrapy
 
+
 class ZillowSpider(scrapy.Spider):
     name = 'zillow'
     allowed_domains = ['www.zillow.com']
@@ -9,3 +10,8 @@ class ZillowSpider(scrapy.Spider):
         # Getting pagination links
         for pag_url in response.xpath('//nav[@aria-label="Pagination"]//a[@title="Next page"]/@href'):
             yield response.follow(pag_url, callback=self.parse)
+
+        # Getting links to apartments
+        for ads_url in response.xpath(
+                "//ul[contains(@class, 'photo-cards_short')]/li/article/div[@class='list-card-info']/a/@href"):
+            yield response.follow(ads_url, callback=self.ads_parse)
