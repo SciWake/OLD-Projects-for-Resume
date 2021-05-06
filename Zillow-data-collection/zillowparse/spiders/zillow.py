@@ -61,7 +61,6 @@ class ZillowSpider(scrapy.Spider):
         item.add_value('openParkingSpaces', property['resoFacts']['openParkingSpaces'])
         item.add_value('carportSpaces', property['resoFacts']['carportSpaces'])
         item.add_value('hasCarport', property['resoFacts']['hasCarport'])
-        item.add_value('spaFeatures', property['resoFacts']['spaFeatures'])
         item.add_value('homeType', property['resoFacts']['homeType'])
         item.add_value('hasPetsAllowed', property['resoFacts']['hasAssociation'])
         item.add_value('taxAssessedValue', property['resoFacts']['taxAssessedValue'])
@@ -73,17 +72,14 @@ class ZillowSpider(scrapy.Spider):
         item.add_value('latitude', property['yearBuilt'])
         item.add_value('description', property['description'])
         item.add_value('livingArea', property['livingArea'])
-
         item.add_value('solarSunScore', property['solarPotential']['sunScore'])
         item.add_value('solarBuildFactor', property['solarPotential']['buildFactor'])
         item.add_value('solarClimateFactor', property['solarPotential']['climateFactor'])
         item.add_value('solarElectricityFactor', property['solarPotential']['electricityFactor'])
         item.add_value('solarFactor', property['solarPotential']['solarFactor'])
-
         item.add_value('mortgageRates_thirtyYearFixedRate', property['mortgageRates']['thirtyYearFixedRate'])
         item.add_value('mortgageRates_fifteenYearFixedRate', property['mortgageRates']['fifteenYearFixedRate'])
         item.add_value('mortgageRates_arm5Rate', property['mortgageRates']['arm5Rate'])
-
         item.add_value('propertyTaxRate', property['propertyTaxRate'])
         item.add_value('schools', property['schools'])
 
