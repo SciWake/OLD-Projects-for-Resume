@@ -8,7 +8,7 @@ import time
 class ZillowSpider(scrapy.Spider):
     name = 'zillow'
     allowed_domains = ['www.zillow.com']
-    start_urls = ['https://www.zillow.com/homes/Washington_rb/']
+    start_urls = ['https://www.zillow.com/homes/San-Francisco_rb/']
 
     def parse(self, response):
         # Getting pagination links
@@ -31,11 +31,27 @@ class ZillowSpider(scrapy.Spider):
 
         return json.loads(data_json)
 
-
     def house_parse(self, response):
         item = ItemLoader(ZillowparseItem(), response)
-        t0 = time.process_time()
         data = self.clear_data(item, response.css("script#hdpApolloPreloadedData::text").extract()[0])
-        t1 = time.process_time()
-        # 0.078125
+
+        property = data['info']['property']
+        item.add_value('id', property['zpid'])
+        item.add_value('url', response.url)
+        item.add_value('state', property['address']['state'])
+        item.add_value('city', property['address']['city'])
+        item.add_value('streetAddress', property['adress']['streetAddress'])
+        item.add_value('zipcode', property['adress']['zipcode'])
+
+        item.add_value('bedrooms', property['bedrooms'])
+        item.add_value('bathrooms', property['bathrooms'])
+        item.add_value('yearBuilt', property['yearBuilt'])
+        item.add_value('isPremierBuilder', property['isPremierBuilder'])
+        item.add_value('longitude', property['longitude'])
+        item.add_value('latitude', property['yearBuilt'])
+        item.add_value('yearBuilt', property['yearBuilt'])
+
+
+
+
         print(1)
