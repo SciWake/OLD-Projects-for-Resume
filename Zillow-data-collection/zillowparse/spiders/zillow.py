@@ -2,7 +2,7 @@ import scrapy
 import json
 from scrapy.loader import ItemLoader
 from zillowparse.items import ZillowparseItem
-import time
+
 
 
 class ZillowSpider(scrapy.Spider):
@@ -37,6 +37,7 @@ class ZillowSpider(scrapy.Spider):
 
         property = data['info']['property']
         item.add_value('id', property['zpid'])
+        item.add_value('price', property['price'])
         item.add_value('url', response.url)
         item.add_value('state', property['address']['state'])
         item.add_value('city', property['address']['city'])
@@ -47,15 +48,12 @@ class ZillowSpider(scrapy.Spider):
         item.add_value('bathroomsFull', property['resoFacts']['bathroomsFull'])
         item.add_value('bathroomsThreeQuarter', property['resoFacts']['bathroomsThreeQuarter'])
         item.add_value('bathroomsOneQuarter', property['resoFacts']['bathroomsOneQuarter'])
-        item.add_value('basement', property['resoFacts']['basement'])
         item.add_value('heating', property['resoFacts']['heating'])
         item.add_value('hasHeating', property['resoFacts']['hasHeating'])
-        item.add_value('cooling', property['resoFacts']['cooling'])
         item.add_value('laundryFeatures', property['resoFacts']['laundryFeatures'])
         item.add_value('fireplaces', property['resoFacts']['fireplaces'])
         item.add_value('fireplaceFeatures', property['resoFacts']['fireplaceFeatures'])
         item.add_value('furnished', property['resoFacts']['furnished'])
-        item.add_value('aboveGradeFinishedArea', property['resoFacts']['aboveGradeFinishedArea'])
         item.add_value('parkingFeatures', property['resoFacts']['parkingFeatures'])
         item.add_value('garageSpaces', property['resoFacts']['garageSpaces'])
         item.add_value('coveredSpaces', property['resoFacts']['coveredSpaces'])
@@ -63,31 +61,33 @@ class ZillowSpider(scrapy.Spider):
         item.add_value('openParkingSpaces', property['resoFacts']['openParkingSpaces'])
         item.add_value('carportSpaces', property['resoFacts']['carportSpaces'])
         item.add_value('hasCarport', property['resoFacts']['hasCarport'])
-        item.add_value('otherParking', property['resoFacts']['otherParking'])
         item.add_value('spaFeatures', property['resoFacts']['spaFeatures'])
-        item.add_value('hasWaterfrontView', property['resoFacts']['hasWaterfrontView'])
-        # drop
-        item.add_value('parcelNumber', property['resoFacts']['parcelNumber'])
-        item.add_value('hasAttachedProperty', property['resoFacts']['hasAttachedProperty'])
-
         item.add_value('homeType', property['resoFacts']['homeType'])
-        # drop
-        item.add_value('numberOfUnitsInCommunit', property['resoFacts']['numberOfUnitsInCommunit'])
         item.add_value('hasPetsAllowed', property['resoFacts']['hasAssociation'])
-        item.add_value('hasAssociation', property['resoFacts']['hasAssociation'])
-
         item.add_value('taxAssessedValue', property['resoFacts']['taxAssessedValue'])
         item.add_value('taxAnnualAmount', property['resoFacts']['taxAnnualAmount'])
         item.add_value('specialListingConditions', property['resoFacts']['specialListingConditions'])
         item.add_value('buyerAgencyCompensation', property['resoFacts']['buyerAgencyCompensation'])
-        #drop
-        item.add_value('propertySubType', property['resoFacts']['propertySubType'])
-
         item.add_value('yearBuilt', property['yearBuilt'])
         item.add_value('longitude', property['longitude'])
         item.add_value('latitude', property['yearBuilt'])
         item.add_value('description', property['description'])
         item.add_value('livingArea', property['livingArea'])
 
+        item.add_value('solarSunScore', property['solarPotential']['sunScore'])
+        item.add_value('solarBuildFactor', property['solarPotential']['buildFactor'])
+        item.add_value('solarClimateFactor', property['solarPotential']['climateFactor'])
+        item.add_value('solarElectricityFactor', property['solarPotential']['electricityFactor'])
+        item.add_value('solarFactor', property['solarPotential']['solarFactor'])
 
-        # yield item.load_item()
+        item.add_value('mortgageRates_thirtyYearFixedRate', property['mortgageRates']['thirtyYearFixedRate'])
+        item.add_value('mortgageRates_fifteenYearFixedRate', property['mortgageRates']['fifteenYearFixedRate'])
+        item.add_value('mortgageRates_arm5Rate', property['mortgageRates']['arm5Rate'])
+
+        item.add_value('propertyTaxRate', property['propertyTaxRate'])
+        item.add_value('schools', property['schools'])
+
+        url_photos = [photo['mixedSources']['jpeg'][-1]['url'] for photo in property['responsivePhotosOriginalRatio']]
+        item.add_value('photos', url_photos)
+
+        yield item.load_item()
