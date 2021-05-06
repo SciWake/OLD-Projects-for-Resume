@@ -7,22 +7,28 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 import scrapy
+import os
 import csv
 from scrapy.pipelines.images import ImagesPipeline
+from urllib.parse import urlparse
+
 
 class ZillowparsePipeline:
     def process_item(self, item, spider):
         return item
 
+
 class ImgPipeline(ImagesPipeline):
     def get_media_requests(self, item, info):
-
         if item.get('photos'):
             for img_url in item['photos']:
                 try:
                     yield scrapy.Request(img_url)
                 except Exception as e:
                     pass
+
+    def file_path(self, request, item, response=None, info=None):
+        return str(item['id']) + '/' + os.path.basename(urlparse(request.url).path)
 
     def item_completed(self, results, item, info):
         if results:
