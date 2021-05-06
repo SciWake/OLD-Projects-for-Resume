@@ -28,3 +28,28 @@ class ImgPipeline(ImagesPipeline):
         if results:
             item['photos'] = [itm[1] for itm in results]
         return item
+
+
+class CSVPipeline(object):
+    def __init__(self):
+        self.file = 'database.csv'
+
+        with open(self.file, 'r', newline='') as csv_file:
+            reader = csv.DictReader(csv_file)
+            self.id_to_csv = [int(row['id']) for row in reader]
+            self.column_name = reader.fieldnames
+
+    def process_item(self, item, spider):
+        csv_file = open(self.file, 'a', newline='', encoding='UTF-8')
+        colums = item.fields.keys()
+
+        data = csv.DictWriter(csv_file, colums)
+        if not self.column_name:
+            data.writeheader()
+            self.column_name = True
+
+        if item['id'] not in self.id_to_csv:
+            data.writerow(item)
+        csv_file.close()
+
+        return item
