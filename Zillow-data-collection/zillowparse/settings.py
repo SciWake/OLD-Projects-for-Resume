@@ -22,7 +22,7 @@ ROBOTSTXT_OBEY = False
 
 LOG_ENABLED = True
 LOG_LEVEL = 'INFO'
-IMAGES_STORE = 'images_zillow'
+IMAGES_STORE = '../images_zillow'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
