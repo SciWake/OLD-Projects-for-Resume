@@ -38,7 +38,7 @@ class ImgPipeline(ImagesPipeline):
 
 class CSVPipeline(object):
     def __init__(self):
-        self.file = '../database.csv'
+        self.file = './input_data/database.csv'
 
         with open(self.file, 'r', newline='') as csv_file:
             reader = csv.DictReader(csv_file)
