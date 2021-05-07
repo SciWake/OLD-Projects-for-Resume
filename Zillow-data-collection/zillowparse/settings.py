@@ -69,7 +69,7 @@ TELNETCONSOLE_ENABLED = False
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    # 'zillowparse.pipelines.ZillowparsePipeline': 300,
-   'zillowparse.pipelines.ImgPipeline': 100,
+   # 'zillowparse.pipelines.ImgPipeline': 100,
    'zillowparse.pipelines.CSVPipeline': 200
 }
 

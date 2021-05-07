@@ -3,12 +3,10 @@ import json
 from scrapy.loader import ItemLoader
 from zillowparse.items import ZillowparseItem
 
-
-
 class ZillowSpider(scrapy.Spider):
     name = 'zillow'
     allowed_domains = ['www.zillow.com']
-    start_urls = ['https://www.zillow.com/homes/San-Francisco_rb/']
+    start_urls = ['https://www.zillow.com/homes/San-Francisco/']
 
     def parse(self, response):
         # Getting pagination links
@@ -46,27 +44,20 @@ class ZillowSpider(scrapy.Spider):
         item.add_value('bedrooms', property['resoFacts']['bedrooms'])
         item.add_value('bathrooms', property['resoFacts']['bathrooms'])
         item.add_value('bathroomsFull', property['resoFacts']['bathroomsFull'])
-        item.add_value('bathroomsThreeQuarter', property['resoFacts']['bathroomsThreeQuarter'])
-        item.add_value('bathroomsOneQuarter', property['resoFacts']['bathroomsOneQuarter'])
         item.add_value('heating', property['resoFacts']['heating'])
         item.add_value('hasHeating', property['resoFacts']['hasHeating'])
         item.add_value('laundryFeatures', property['resoFacts']['laundryFeatures'])
         item.add_value('fireplaces', property['resoFacts']['fireplaces'])
         item.add_value('fireplaceFeatures', property['resoFacts']['fireplaceFeatures'])
-        item.add_value('furnished', property['resoFacts']['furnished'])
         item.add_value('parkingFeatures', property['resoFacts']['parkingFeatures'])
         item.add_value('garageSpaces', property['resoFacts']['garageSpaces'])
-        item.add_value('coveredSpaces', property['resoFacts']['coveredSpaces'])
         item.add_value('hasAttachedGarage', property['resoFacts']['hasAttachedGarage'])
-        item.add_value('openParkingSpaces', property['resoFacts']['openParkingSpaces'])
-        item.add_value('carportSpaces', property['resoFacts']['carportSpaces'])
         item.add_value('hasCarport', property['resoFacts']['hasCarport'])
         item.add_value('homeType', property['resoFacts']['homeType'])
         item.add_value('hasPetsAllowed', property['resoFacts']['hasAssociation'])
         item.add_value('taxAssessedValue', property['resoFacts']['taxAssessedValue'])
         item.add_value('taxAnnualAmount', property['resoFacts']['taxAnnualAmount'])
         item.add_value('specialListingConditions', property['resoFacts']['specialListingConditions'])
-        item.add_value('buyerAgencyCompensation', property['resoFacts']['buyerAgencyCompensation'])
         item.add_value('yearBuilt', property['yearBuilt'])
         item.add_value('longitude', property['longitude'])
         item.add_value('latitude', property['yearBuilt'])
