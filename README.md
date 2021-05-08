@@ -3,9 +3,14 @@
 Репозиторий используется для хранения проектов.
 
 ## Список проектов:
-### :blue_book: [`house-price-prediction:`](https://github.com/bimastics/Projects-for-Resume/tree/master/house-price-prediction)
+
+### :zero: [`Zillow-data-collection`](https://github.com/bimastics/Projects-for-Resume/tree/master/Zillow-data-collection)
+
+В этом проекте используется фреймворк Scrapy, который решает задачи сбора информации. Для сбора данных был выбран ресурс Zillow - это американская компания по продаже онлайн-недвижимости. В сбор данных производился в штате Колифорния, город Лос-Анджелес. После сбора данных, произведена обработка пропущенных значений с последующей визулаизацей на нескольких графиках.
+
+### :one: [`house-price-prediction:`](https://github.com/bimastics/Projects-for-Resume/tree/master/house-price-prediction)
 Данный проект демонстрирует навыки работы с библиотеками: [**Scikit-learn, Pandas, Numpy...**]. Задача проекта предсказать цену на недвижимость в Калифорнии исходя из признаков (Координаты, количество комнат, район...).
 
-### :orange_book: [`database-design`](https://github.com/bimastics/Projects-for-Resume/tree/master/database-design)
+### :two: [`database-design`](https://github.com/bimastics/Projects-for-Resume/tree/master/database-design)
 Идея проекта заключается в проектировании базы данных для определённой системы, в качестве проекта был выбран мессенджер telegram. Главная задача проекта — это спроектировать структуру выбранного сервиса, посредством визуального осмотра функционала. После создания структуры, база данных была заполнена временными данными на основе которых формировались основные запросы.
 
