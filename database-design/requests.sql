@@ -24,22 +24,23 @@ LIMIT 3;
 
 -- Сообщения от пользователя
 SELECT messages.user_id, messages.body, messages_users.target_id
-    FROM messages
-      INNER JOIN messages_users
-        ON messages.id = messages_users.messages_id
-	  INNER JOIN target_types
-        ON messages_users.target_type_id = target_types.id AND target_types.name = 'users'
-	WHERE messages.user_id = 65;
+  FROM messages
+    INNER JOIN messages_users
+      ON messages.id = messages_users.messages_id
+    INNER JOIN target_types
+      ON messages_users.target_type_id = target_types.id 
+        AND target_types.name = 'users'
+WHERE messages.user_id = 65;
 
 -- Сообщение от пользователя и к пользователю (Переписка пользователя 65)
 SELECT messages.user_id, messages.body, messages_users.target_id
-    FROM messages
-      INNER JOIN messages_users
-        ON messages.id = messages_users.messages_id 
-	  INNER JOIN target_types
-        ON messages_users.target_type_id = target_types.id 
-          AND target_types.name = 'users'
-	WHERE messages_users.target_id = 65 OR messages.user_id = 65;
+  FROM messages
+    INNER JOIN messages_users
+      ON messages.id = messages_users.messages_id 
+    INNER JOIN target_types
+      ON messages_users.target_type_id = target_types.id 
+        AND target_types.name = 'users'
+WHERE messages_users.target_id = 65 OR messages.user_id = 65;
 
 
 -- Выборка самый большой файл пользоватлея и файл, добавленый последним.
@@ -49,9 +50,9 @@ SELECT profiles.user_id,
   media_big_file.id AS "The heaviest user file",
   media_top_date.id AS "Last user file"
     FROM profiles
-	  LEFT JOIN media AS media_big_file
+      LEFT JOIN media AS media_big_file
         ON media_big_file.user_id = profiles.user_id
-	  LEFT JOIN media AS media_top_date
+      LEFT JOIN media AS media_top_date
         ON media_top_date.user_id = profiles.user_id
 WHERE profiles.user_id = 90
 ORDER BY media_big_file.size DESC, media_top_date.created_at DESC
@@ -64,10 +65,10 @@ SELECT DISTINCT users.id,
     FROM profiles
       INNER JOIN users
         ON profiles.user_id = users.id
-	  LEFT JOIN media
+      LEFT JOIN media
         ON media.user_id = users.id
-	  WINDOW w_media_size_desc AS (PARTITION BY users.id ORDER BY media.size DESC),
-      w_media_created_at_desc AS (PARTITION BY users.id ORDER BY media.created_at DESC);
+      WINDOW w_media_size_desc AS (PARTITION BY users.id ORDER BY media.size DESC),
+             w_media_created_at_desc AS (PARTITION BY users.id ORDER BY media.created_at DESC);
 
 
 -- Построить запрос, который будет выводить следующие столбцы:
@@ -82,8 +83,7 @@ SELECT DISTINCT users.id,
 
 SELECT DISTINCT 
   communities.name AS canal_name,
-  COUNT(communities_users.user_id) OVER() 
-    / (SELECT COUNT(*) FROM communities) AS avg_users_in_groups,
+  COUNT(communities_users.user_id) OVER() / (SELECT COUNT(*) FROM communities) AS avg_users_in_groups,
   FIRST_VALUE(CONCAT_WS(" ", profiles.first_name, profiles.last_name)) OVER w_community_birthday_desc AS youngest,
   FIRST_VALUE(CONCAT_WS(" ", profiles.first_name, profiles.last_name)) OVER w_community_birthday_asc AS oldest,
   COUNT(communities_users.user_id) OVER w_community AS users_in_canal,
@@ -105,12 +105,12 @@ SELECT DISTINCT
 -- Количество медиафайлов пользователей
 DROP VIEW IF EXISTS mediafile_users;
 CREATE VIEW mediafile_users AS
-	SELECT profiles.user_id, COUNT(media.id) AS count_media
-	  FROM profiles 
-		LEFT JOIN media
-		  ON profiles.user_id = media.user_id
-	  GROUP BY profiles.user_id
-	  ORDER BY count_media DESC;
+  SELECT profiles.user_id, COUNT(media.id) AS count_media
+     FROM profiles 
+       LEFT JOIN media
+         ON profiles.user_id = media.user_id
+  GROUP BY profiles.user_id
+  ORDER BY count_media DESC;
 
 -- Обращаемся к представлению
 SELECT * FROM mediafile_users;
@@ -120,5 +120,5 @@ SELECT * FROM mediafile_users;
 -- Для пользователя с наибольшим количеством медиафайлов, выведем общий размер файлов в МБ
 SELECT user_id,
   SUM(size) / 1048576 AS "media file size MB"
-	FROM media
-      WHERE media.user_id = (SELECT user_id FROM mediafile_users LIMIT 1);
+    FROM media
+WHERE media.user_id = (SELECT user_id FROM mediafile_users LIMIT 1);
