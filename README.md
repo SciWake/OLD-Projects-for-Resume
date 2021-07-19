@@ -1,7 +1,5 @@
 # Projects-for-Resume
 
-Репозиторий используется для хранения проектов.
-
 ## Список проектов:
 
 ### :zero: [`Zillow-data-collection`](https://github.com/bimastics/Projects-for-Resume/tree/master/Zillow-data-collection)
